@@ -1,0 +1,19 @@
+version: '2'
+services:
+  rsyslogserver:
+    build: ./rsyslog
+    volumes:
+      - ./logs_dst:/mnt/logs
+  rsyslogclient:
+    build: ./rsyslog
+    volumes:
+      - ./logs_for:/mnt/logs
+    environment:
+      DST_SERVER: rsyslogserver
+      LISTEN_PORT: 51222
+  nginx:
+    build: ./nginx
+    ports: 
+      - 8080:80
+    volumes:
+      - ./logs_for:/mnt/logs
